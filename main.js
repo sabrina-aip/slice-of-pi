@@ -8,6 +8,8 @@ const min = document.querySelector('.minute')
 const sec = document.querySelector('.second')
 
 // variables for quiz function
+
+entry_sel.value = `3.`;
 let places = 0;
 let attempt = `3.`;
 let entry;
@@ -25,27 +27,15 @@ let elapsed;
 
 // FUNCTIONS
 
-function promptEntry(){
-  console.log(attempt_sel.value);
-  // posts the users attempt thus far
-  attempt_sel.textContent = `${attempt.slice(-10)}`;  
-  places_sel.textContent = `${places}`;
-  // receive an attempt
-  // this assume that answers are auto submitted
-  // add bool to toggle the feature to wait for enter keydown i.e. e.keyCode == 13
-  entry_sel.addEventListener('keyup',checkAnswer);
-
-}
-
 function checkAnswer(e){
-  console.log(entry_sel.value);
+  console.log(e.key);
+
   // check the answer
-  if (Number(entry_sel.value) == Number(pi[places])){
+  if (e.key == Number(pi[places])){
     // if correct, we push the entry_sel value to the attempt and clear the number
-    attempt += `${entry_sel.value}`;
+    //attempt += `${entry_sel.value}`;
     places ++;
-    entry_sel.removeEventListener('keyup', checkAnswer);
-    entry_sel.value = '';
+    entry_sel.value = entry_sel.value.slice(-10);
     promptEntry();
   } else {
     error = entry_sel.value;
@@ -60,6 +50,27 @@ function finish(){
   sessionStorage.setItem('places', places);
   sessionStorage.setItem('error', error);
   window.location.replace("results.html");
+}
+
+function promptEntry(){
+  //console.log(attempt_sel.value);
+  // posts the users attempt thus far
+  //attempt_sel.textContent = `${attempt.slice(-10)}`;  
+  places_sel.textContent = `${places}`;
+  // receive an attempt
+  // this assume that answers are auto submitted
+  // add bool to toggle the feature to wait for enter keydown i.e. e.keyCode == 13
+  //entry_sel.addEventListener('keyup',checkAnswer);
+  entry_sel.addEventListener("keypress", function(e) {
+    var key = e.keyCode;
+    // Only allow numbers to be entered
+    if (key < 48 || key > 57) {
+      e.preventDefault();
+    } else {
+      checkAnswer(e)
+    }
+  },{once:true});
+
 }
 
 function start(){
