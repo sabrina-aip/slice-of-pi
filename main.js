@@ -1,7 +1,6 @@
 // Events
 
 const entry_sel = document.querySelector('#entry');
-const attempt_sel = document.querySelector('#attempt');
 const places_sel = document.querySelector('#places');
 const hr = document.querySelector('.hour')
 const min = document.querySelector('.minute')
@@ -9,12 +8,11 @@ const sec = document.querySelector('.second')
 
 // variables for quiz function
 
+// default entry_sel value so users don't need to type 3.
 entry_sel.value = `3.`;
+
+// number of places 
 let places = 0;
-let attempt = `3.`;
-let entry;
-let answered = false;
-let timeout = null;
 let startTime;
 let elapsedTime = 0;
 let error;
@@ -27,50 +25,56 @@ let elapsed;
 
 // FUNCTIONS
 
-function checkAnswer(e){
-  console.log(e.key);
+function promptEntry(){
+  // show current number of places listen
+  places_sel.textContent = `${places}`;
+  
+  // receive an attempt
+  // this assume that answers are auto submitted
+  // add bool to toggle the feature to wait for enter keydown i.e. e.keyCode == 13
+  entry_sel.addEventListener("keypress", function(e) {
+      var key = e.keyCode;
+      // Only allow numbers to be entered
+      if (key < 48 || key > 57) {
+        e.preventDefault();
+      } else {
+      // if the value is a number, then validate the input  
+        checkAnswer(e)
+      }
+    },{
+      // remove event listener after single use
+      once:true
+    }
+  );
+}
 
+
+function checkAnswer(e){
   // check the answer
   if (e.key == Number(pi[places])){
-    // if correct, we push the entry_sel value to the attempt and clear the number
-    //attempt += `${entry_sel.value}`;
+    // if correct, we increase the number of places recalled
     places ++;
+
+    // we limit the values displayed to the 10 most recent entries
     entry_sel.value = entry_sel.value.slice(-10);
+
+    // return to waiting for prompt
     promptEntry();
   } else {
+
+    // track the error to display it at the end
     error = entry_sel.value;
+    
     // go to the finish page
     finish();
   }
 }
 
 function finish(){
-  sessionStorage.setItem('attempt', attempt);
   sessionStorage.setItem('timer', `${convertToString(hour)}:${convertToString(minute)}:${convertToString(second)}`);
   sessionStorage.setItem('places', places);
   sessionStorage.setItem('error', error);
   window.location.replace("results.html");
-}
-
-function promptEntry(){
-  //console.log(attempt_sel.value);
-  // posts the users attempt thus far
-  //attempt_sel.textContent = `${attempt.slice(-10)}`;  
-  places_sel.textContent = `${places}`;
-  // receive an attempt
-  // this assume that answers are auto submitted
-  // add bool to toggle the feature to wait for enter keydown i.e. e.keyCode == 13
-  //entry_sel.addEventListener('keyup',checkAnswer);
-  entry_sel.addEventListener("keypress", function(e) {
-    var key = e.keyCode;
-    // Only allow numbers to be entered
-    if (key < 48 || key > 57) {
-      e.preventDefault();
-    } else {
-      checkAnswer(e)
-    }
-  },{once:true});
-
 }
 
 function start(){
