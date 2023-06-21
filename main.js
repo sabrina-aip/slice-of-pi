@@ -51,7 +51,10 @@ function promptEntry(){
 
 function checkAnswer(e){
   // check the answer
+  console.log(`check answer run`)
+  console.log(e.key == Number(pi[places]))
   if (e.key == Number(pi[places])){
+
     // if correct, we increase the number of places recalled
     places ++;
 
@@ -61,9 +64,10 @@ function checkAnswer(e){
     // return to waiting for prompt
     promptEntry();
   } else {
+    console.log(places +1);
 
     // track the error to display it at the end
-    error = entry_sel.value;
+    error = e.key;
     
     // go to the finish page
     finish();
