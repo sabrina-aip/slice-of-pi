@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" media="screen and (min-width: 601px)" href="styles/stylesheet.css" />
   <link rel="stylesheet" media="screen and (max-width: 600px)" href="styles/mobile.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
@@ -26,7 +26,7 @@
     </div>
     <div class="container">
       <em><p id="prompt">tap anywhere to start typing</p></em>
-      <input type="text" id="entry" pattern="\d*" onpaste="return false;" ondrop="return false;" autocomplete="off" autofocus/>
+      <input type="text" id="entry" pattern="\d*" inputmode="numeric" onpaste="return false;" ondrop="return false;" autocomplete="off" autofocus/>
       <em><p>there is no undo - entries are automatically submitted</p></em>
     </div>
   </center>

@@ -25,13 +25,16 @@ let minute = 0;
 let hour = 0;
 let elapsed;
 
+let digits = new Set(['0','1','2','3','4','5','6','7','8','9']) 
+
 // FUNCTIONS
 
 function promptEntry(){
   addEventListener("touchstart", (event) => {
-    entry_sel.click();
+    //entry_sel.click();
+    console.log('touched');
     entry_sel.focus();
-  },{once:true});
+  });
   // show current number of places listen
   if (!prompt){
     prompt_sel.classList.add("hidden");
@@ -40,18 +43,15 @@ function promptEntry(){
   // receive an attempt
   // this assume that answers are auto submitted
   // add bool to toggle the feature to wait for enter keydown i.e. e.keyCode == 13
-  entry_sel.addEventListener("keypress", checkAnswer)
+  entry_sel.addEventListener("input", checkAnswer)
 }
 
 function checkAnswer(e){
-  if (e.keyCode <48 || e.keyCode > 57) {
-    console.log(`default prevented`)
-    e.preventDefault();
-  } else {
+  if (digits.has(e.data)) {
+    console.log(`numeric`)
     // check the answer
-    entry_sel.removeEventListener("keypress",checkAnswer);
-    if (e.key == Number(pi[places])){
-      console.log(e.key == Number(pi[places]))
+    entry_sel.removeEventListener("input",checkAnswer);
+    if (Number(e.data) == Number(pi[places])){
       // if correct, we increase the number of places recalled
       places ++;
 
@@ -62,11 +62,13 @@ function checkAnswer(e){
       promptEntry();
     } else {
       // track the error to display it at the end
-      error = e.key;
+      error = e.data;
       
       // go to the finish page
       finish();
     }
+   } else {
+    entry_sel.value = entry_sel.value.slice(0,-1);
   }
 }
 
