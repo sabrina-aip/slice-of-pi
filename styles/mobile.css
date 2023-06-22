@@ -167,10 +167,7 @@ input[type=number]::-webkit-outer-spin-button {
 .hidden {
   visibility: hidden;
   opacity: 0;
-  transform: translateY(-10px);
-  -webkit-transform: translateY(-10px);
-  -moz-transform: translateY(-10px);
-  transition: visibility 0s 1s, opacity 1s linear, transform 1s linear;
-  -webkit-transition: visibility 0s 1s, opacity 1s linear, -webkit-transform 1s linear;
-  -moz-transition: visibility 0s 1s, opacity 1s linear, -moz-transform 1s linear;
+  transition: visibility 0s 1s, opacity 1s linear;
+  -webkit-transition: visibility 0s 1s, opacity 1s linear;
+  -moz-transition: visibility 0s 1s, opacity 1s linear;
 }

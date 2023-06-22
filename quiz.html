@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <link rel="stylesheet" media="screen and (min-width: 601px)" href="styles/stylesheet.css" />
   <link rel="stylesheet" media="screen and (max-width: 600px)" href="styles/mobile.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
   <link rel="icon" href="images/pi.ico" type="image/*">
-
   <script type="text/javascript" src="assets/pi.js"></script>
   <title>quiz | slice of pi</title>
 </head>
@@ -21,13 +21,13 @@
       </div>
       <div>
         <p>time</p>
-        <p class = "counter"><span class="hour"></span>:<span class="minute"></span>:<span class="second"></span></p>
+        <p class = "counter"><span class="hour">00</span>:<span class="minute">00</span>:<span class="second">00</span></p>
       </div>
     </div>
     <div class="container">
-      <em><p id="prompt">tap anywhere to start typing</p></em>
-      <input type="text" id="entry" pattern="\d*" inputmode="numeric" onpaste="return false;" ondrop="return false;" autocomplete="off" autofocus/>
-      <em><p>there is no undo - entries are automatically submitted</p></em>
+      <em><p id="prompt">tap on the number to start typing</p></em>
+      <input type="text" id="entry" pattern="\d*" inputmode="numeric" onpaste="return false;" ondrop="return false;" autocomplete="off"/>
+      <em><p id="prompt">the quiz will end when you input the wrong number</p></em>
     </div>
   </center>
   <script src="scripts/main.js"></script>

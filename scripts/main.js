@@ -9,9 +9,11 @@ const prompt_sel = document.querySelector('#prompt');
 
 // variables for quiz function
 
-// default entry_sel value so users don't need to type 3.
-entry_sel.value = `3.`;
+// prompt value to track visibility before clearing it once people get in the zone
 let prompt = true;
+
+// attempt value so we only update it with a valid keystroke
+let attempt = '3.';
 
 // number of places 
 let places = 0;
@@ -30,11 +32,7 @@ let digits = new Set(['0','1','2','3','4','5','6','7','8','9'])
 // FUNCTIONS
 
 function promptEntry(){
-  addEventListener("touchstart", (event) => {
-    //entry_sel.click();
-    console.log('touched');
-    entry_sel.focus();
-  });
+  entry_sel.value = attempt;
   // show current number of places listen
   if (!prompt){
     prompt_sel.classList.add("hidden");
@@ -48,27 +46,38 @@ function promptEntry(){
 
 function checkAnswer(e){
   if (digits.has(e.data)) {
-    console.log(`numeric`)
+    prompt = false;
     // check the answer
     entry_sel.removeEventListener("input",checkAnswer);
     if (Number(e.data) == Number(pi[places])){
+
       // if correct, we increase the number of places recalled
       places ++;
 
+      // ammend the correct value to attempt
+      attempt += e.data;
+
+      // shorten attempt value if necessary
+      attempt.slice(-10);
+
+      // update the entry_sel value displayed
+      entry_sel.value = attempt
+
       // we limit the values displayed to the 10 most recent entries
-      entry_sel.value = entry_sel.value.slice(-10);
+      //attempt = entry_sel.value;
+      //entry_sel.value = entry_sel.value.slice(-10);
 
       // return to waiting for prompt
       promptEntry();
     } else {
       // track the error to display it at the end
       error = e.data;
-      
       // go to the finish page
       finish();
     }
-   } else {
-    entry_sel.value = entry_sel.value.slice(0,-1);
+  } else {
+    console.log('text insert attempted')
+    entry_sel.value = attempt
   }
 }
 
@@ -111,6 +120,5 @@ function addTime(){
 // run when page opens
 sessionStorage.clear()
 promptEntry()
-entry_sel.click()
-entry_sel.focus()
-start()
+entry_sel.addEventListener("input", start, {once:true})
+//start()
