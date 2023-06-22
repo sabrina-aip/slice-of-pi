@@ -2,14 +2,16 @@
 
 const entry_sel = document.querySelector('#entry');
 const places_sel = document.querySelector('#places');
-const hr = document.querySelector('.hour')
-const min = document.querySelector('.minute')
-const sec = document.querySelector('.second')
+const hr = document.querySelector('.hour');
+const min = document.querySelector('.minute');
+const sec = document.querySelector('.second');
+const prompt_sel = document.querySelector('#prompt');
 
 // variables for quiz function
 
 // default entry_sel value so users don't need to type 3.
 entry_sel.value = `3.`;
+let prompt = true;
 
 // number of places 
 let places = 0;
@@ -26,51 +28,45 @@ let elapsed;
 // FUNCTIONS
 
 function promptEntry(){
+  addEventListener("touchstart", (event) => {
+    entry_sel.click();
+    entry_sel.focus();
+  },{once:true});
   // show current number of places listen
+  if (!prompt){
+    prompt_sel.classList.add("hidden");
+  }
   places_sel.textContent = `${places}`;
-  
   // receive an attempt
   // this assume that answers are auto submitted
   // add bool to toggle the feature to wait for enter keydown i.e. e.keyCode == 13
-  entry_sel.addEventListener("keypress", function(e) {
-      var key = e.keyCode;
-      // Only allow numbers to be entered
-      if (key < 48 || key > 57) {
-        e.preventDefault();
-      } else {
-      // if the value is a number, then validate the input  
-        checkAnswer(e)
-      }
-    },{
-      // remove event listener after single use
-      once:true
-    }
-  );
+  entry_sel.addEventListener("keypress", checkAnswer)
 }
 
-
 function checkAnswer(e){
-  // check the answer
-  console.log(`check answer run`)
-  console.log(e.key == Number(pi[places]))
-  if (e.key == Number(pi[places])){
-
-    // if correct, we increase the number of places recalled
-    places ++;
-
-    // we limit the values displayed to the 10 most recent entries
-    entry_sel.value = entry_sel.value.slice(-10);
-
-    // return to waiting for prompt
-    promptEntry();
+  if (e.keyCode <48 || e.keyCode > 57) {
+    console.log(`default prevented`)
+    e.preventDefault();
   } else {
-    console.log(places +1);
+    // check the answer
+    entry_sel.removeEventListener("keypress",checkAnswer);
+    if (e.key == Number(pi[places])){
+      console.log(e.key == Number(pi[places]))
+      // if correct, we increase the number of places recalled
+      places ++;
 
-    // track the error to display it at the end
-    error = e.key;
-    
-    // go to the finish page
-    finish();
+      // we limit the values displayed to the 10 most recent entries
+      entry_sel.value = entry_sel.value.slice(-10);
+
+      // return to waiting for prompt
+      promptEntry();
+    } else {
+      // track the error to display it at the end
+      error = e.key;
+      
+      // go to the finish page
+      finish();
+    }
   }
 }
 
@@ -113,4 +109,6 @@ function addTime(){
 // run when page opens
 sessionStorage.clear()
 promptEntry()
+entry_sel.click()
+entry_sel.focus()
 start()

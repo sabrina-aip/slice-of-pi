@@ -5,7 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" media="screen and (min-width: 601px)" href="styles/stylesheet.css" />
+  <link rel="stylesheet" media="screen and (max-width: 600px)" href="styles/mobile.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+  <link rel="icon" href="images/pi.ico" type="image/*">
+
   <script type="text/javascript" src="assets/pi.js"></script>
   <title>quiz | slice of pi</title>
 </head>
@@ -22,15 +25,9 @@
       </div>
     </div>
     <div class="container">
-      <input type="text" id="entry" pattern="\d*" autofocus/>
-    </div>
-    <div class="footer">
-      <!--- social link --->
-      <div class="social-links">
-        <a href="https://www.youtube.com/answerinprogress" class="fab fa-youtube" target="_blank" rel="noopener noreferrer"></a>
-        <a href="https://www.twitter.com/answerintweets" class="fab fa-twitter" target="_blank" rel="noopener noreferrer"></a>
-        <a href="https://www.instagram.com/answerinprogress" class="fab fa-instagram" target="_blank" rel="noopener noreferrer"></a>
-      </div>     
+      <em><p id="prompt">tap anywhere to start typing</p></em>
+      <input type="text" id="entry" pattern="\d*" onpaste="return false;" ondrop="return false;" autocomplete="off" autofocus/>
+      <em><p>there is no undo - entries are automatically submitted</p></em>
     </div>
   </center>
   <script src="scripts/main.js"></script>
