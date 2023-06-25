@@ -1,4 +1,6 @@
 // Events
+const startingPoint = sessionStorage.getItem('startingPoint');
+const mercy = sessionStorage.getItem('mercy');
 
 const entry_sel = document.querySelector('#entry');
 const places_sel = document.querySelector('#places');
@@ -7,13 +9,18 @@ const min = document.querySelector('.minute');
 const sec = document.querySelector('.second');
 const prompt_sel = document.querySelector('#prompt');
 
+
 // variables for quiz function
 
 // prompt value to track visibility before clearing it once people get in the zone
 let prompt = true;
 
 // attempt value so we only update it with a valid keystroke
-let attempt = '3.';
+let attempt;
+let headStart;
+
+// amount of typos allowed by mercy rule
+let typoNum = 0;
 
 // number of places 
 let places = 0;
@@ -30,13 +37,23 @@ let elapsed;
 let digits = new Set(['0','1','2','3','4','5','6','7','8','9']) 
 
 // FUNCTIONS
+console.log(mercy)
+
+if (startingPoint == 0 || startingPoint == null || startingPoint.length == 0){
+  attempt = `3.`;
+  headStart = 0;
+} else if (startingPoint <= 10){
+  attempt = `3.${pi.slice(0,startingPoint)}`;
+  headStart = Number(startingPoint);
+} else {
+  attempt = pi.slice(0,startingPoint).slice(-10);
+  headStart = Number(startingPoint);
+}
+
 
 function promptEntry(){
   entry_sel.value = attempt;
   // show current number of places listen
-  if (!prompt){
-    prompt_sel.classList.add("hidden");
-  }
   places_sel.textContent = `${places}`;
   // receive an attempt
   // this assume that answers are auto submitted
@@ -45,11 +62,23 @@ function promptEntry(){
 }
 
 function checkAnswer(e){
+  //console.log(`place with head start: ${places+headStart}`);
   if (digits.has(e.data)) {
-    prompt = false;
+    // hide typing prompt after first correct entry
+    if (places == 1) {
+      prompt_sel.classList.add("hidden");
+    }
     // check the answer
     entry_sel.removeEventListener("input",checkAnswer);
-    if (Number(e.data) == Number(pi[places])){
+    //console.log(`checking input ${e.data} vs pi place ${pi[Number(places)+Number(headStart)]}`)
+    if (Number(e.data) == Number(pi[places+headStart])){
+
+      if (mercy == `true` & typoNum == 1){
+        // bring back typo number
+        typoNum = 0;
+        // remove prompt error flag
+        prompt_sel.classList.add("hidden");
+      }
 
       // if correct, we increase the number of places recalled
       places ++;
@@ -70,11 +99,24 @@ function checkAnswer(e){
       // return to waiting for prompt
       promptEntry();
     } else {
-      // track the error to display it at the end
-      error = e.data;
-      // go to the finish page
-      finish();
-    }
+      // check if mercy is allowed
+      if (mercy == `true`) {
+        // add one to typo
+        typoNum ++;
+        entry_sel.value = attempt;
+        prompt_sel.textContent = "wrong entry attempted, you have one correction attempt";
+        prompt_sel.style.color = "red";
+        prompt = true;
+        prompt_sel.classList.remove("hidden");
+        promptEntry();
+      } else {
+        // track the error to display it at the end
+        error = e.data;
+        // go to the finish page
+        finish();
+      }
+      
+    } 
   } else {
     console.log('text insert attempted')
     entry_sel.value = attempt
@@ -84,6 +126,7 @@ function checkAnswer(e){
 function finish(){
   sessionStorage.setItem('timer', `${convertToString(hour)}:${convertToString(minute)}:${convertToString(second)}`);
   sessionStorage.setItem('places', places);
+  sessionStorage.setItem('headStart', headStart);
   sessionStorage.setItem('error', error);
   window.location.replace("results.html");
 }
