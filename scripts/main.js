@@ -100,7 +100,7 @@ function checkAnswer(e){
       promptEntry();
     } else {
       // check if mercy is allowed
-      if (mercy == `true`) {
+      if (mercy == `true` & typoNum == 0) {
         // add one to typo
         typoNum ++;
         entry_sel.value = attempt;
