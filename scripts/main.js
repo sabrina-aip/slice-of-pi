@@ -65,7 +65,7 @@ function checkAnswer(e){
   //console.log(`place with head start: ${places+headStart}`);
   if (digits.has(e.data)) {
     // hide typing prompt after first correct entry
-    if (places == 1) {
+    if (places == 3) {
       prompt_sel.classList.add("hidden");
     }
     // check the answer
@@ -104,7 +104,7 @@ function checkAnswer(e){
         // add one to typo
         typoNum ++;
         entry_sel.value = attempt;
-        prompt_sel.textContent = "wrong entry attempted, you have one correction attempt";
+        prompt_sel.textContent = "wrong entry - you have one correction attempt";
         prompt_sel.style.color = "red";
         prompt = true;
         prompt_sel.classList.remove("hidden");
