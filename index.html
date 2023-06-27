@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
   
   <link rel="stylesheet" media="screen and (min-width: 601px)" href="styles/stylesheet.css" />
   <link rel="stylesheet" media="screen and (max-width: 600px)" href="styles/mobile.css" />
@@ -23,14 +23,24 @@
     <h1>slice of pi</h1> 
     <p>how many digits of pi can you recite?</p>
     <p>- - - - - - - - - - - - - - - - -</p>
-    <p>enable typo forgiveness?</p>
+
+    <p>enable typo forgiveness? <i id="modal-btn" class="fa fa-question-circle" aria-hidden="true"></i></p>
+
+    <div id="typo-modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>you will have one opportunity to correct a typo before the quiz ends</p>
+      </div>
+    </div>
+
     <!-- Rounded switch -->
     <label class="switch">
-      <input type="checkbox" id="mercy">
+      <input type="checkbox" id="mercy" checked>
       <span class="slider round"></span>
     </label>
-    <p>where do you want to start?</p>
-    <input type="number" placeholder="0" id="startingPoint"/>
+
+    <p>which decimal place do you want to start at?</p>
+    <input type="number" placeholder="0" pattern="\d*" inputmode="numeric" id="startingPoint"/>
     <br>
     <p>- - - - - - - - - - - - - - - - -</p>
     <a class="btn" id="start-btn">start</a>
@@ -44,7 +54,7 @@
       <a href="https://www.twitter.com/answerintweets" class="fab fa-twitter" target="_blank" rel="noopener noreferrer"></a>
       <a href="https://www.instagram.com/answerinprogress" class="fab fa-instagram" target="_blank" rel="noopener noreferrer"></a>
     </div>     
-  </div>
+  </div>  
   <script src="scripts/start.js"></script>
 </body>
 </html>
